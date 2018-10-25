@@ -1,10 +1,12 @@
 import random
 import sys
 import time
+import os
 
 
 def print_horses(horses):
-    print("Horses:\t\tOdds:\n")
+    os.system("clear")
+    print("\nHorses:\t\tOdds:\n")
     for horse in horses.keys():
         print(f"{horse:15} {horses[horse]:.1f}")
 
@@ -30,9 +32,11 @@ def betting_cash_amount(money):
         print("Available money: " + str(money))
         try:
             bet_amount = input("How much you wanna bet? ")
-            bet_amount = int(bet_amount)
+            bet_amount = float(bet_amount)
             if bet_amount > money:
                 print("Not enough money to bet!")
+            elif bet_amount <= 0:
+                print("You cannot bet zero or less!!")
             else:
                 money -= bet_amount
                 print("New balance after betting: " + str(money))
@@ -64,37 +68,53 @@ def even_slower_print(string):
 def the_winner_is(horses):
     winner_is = random.choice(list(horses.keys()))
     print("The winner is: " + winner_is)
-    winner_is = horses[winner_is]
+    time.sleep(0.7)
+    # winner_is = horses[winner_is]
     return winner_is
 
 
+def play_again(in_progress):
+    answer = input("Would you like to play again? ").lower().startswith("y")
+    if answer == "y":
+        main()
+    else:
+        in_progress = False
 
 
 
 
 
 def main():
+    time.sleep(3)
     money = 100
     horses = {'Chop Chop': 2.0, 'Indian Sea': 3.2, 'Iriss Spirit': 4.3, 
               'Parknacilla': 1.5, 'Pytilla': 2.5, 'Rainbow Heart': 7.0, 
               'Storm Athena': 1.8, 'Tartlette': 0.7}
-    print_horses(horses)
 
-    print("\n")
     in_progress = True
 
     while in_progress:
+        print_horses(horses)
         betted_horse = betting_on_horse(horses)
-        actual_bet, new_money = betting_cash_amount(new_money)
+        actual_bet, new_money = betting_cash_amount(money)
         # money -= actual_bet
         # race_is_on()
         actual_winner = the_winner_is(horses)
-        if betted_horse == actual_winner:
-            new_money += actual_bet * horses[actual_winner]
-            print("Your horse won!! Your new Balance is: " + new_money)
+        if new_money < 1:
+            print("You lost all your money! Game Over.")
+            play_again(in_progress)
         else:
-            print("Sadly your horse was too slow!")
+            if betted_horse == actual_winner:
+                new_money += actual_bet * horses[actual_winner]
+                print("Your horse won!! Your new Balance is: " + str(new_money))
+                time.sleep(1)
+                slow_printing("Next Race in...    3..    2..     1..")
+                time.sleep(0.8)
+            else:
+                print("Sadly your horse was too slow!")
+                slow_printing("Next Race in...    3..    2..     1..")
+                time.sleep(0.8)
 
-
+        money = new_money
 
 main()
