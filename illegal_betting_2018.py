@@ -2,7 +2,6 @@ import random
 
 def betting_on_horse(horses):
     betting_is_on = True
-    print(horses)
     while betting_is_on:
         try:
             bet = input("Which horse you wanna bet on? ")
