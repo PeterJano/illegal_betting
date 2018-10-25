@@ -15,7 +15,7 @@ def betting_on_horse(horses):
     betting_is_on = True
     while betting_is_on:
         try:
-            bet = input("Which horse you wanna bet on? ")
+            bet = input("\nWhich horse you wanna bet on? ")
             bet = str(bet)
             if bet in horses.keys():
                 print("You bet on: " + bet)
@@ -88,8 +88,8 @@ def main():
     time.sleep(3)
     money = 100
     horses = {'Chop Chop': 2.0, 'Indian Sea': 3.2, 'Iriss Spirit': 4.3, 
-              'Parknacilla': 1.5, 'Pytilla': 2.5, 'Rainbow Heart': 7.0, 
-              'Storm Athena': 1.8, 'Tartlette': 0.7}
+              'Parknacilla': 1.5, 'Pytilla': 2.5, 'Rainbow Heart': 0.7, 
+              'Storm Athena': 1.8, 'Tartlette': 7.0}
 
     in_progress = True
 
@@ -102,6 +102,8 @@ def main():
         actual_winner = the_winner_is(horses)
         if new_money < 1:
             print("You lost all your money! Game Over.")
+            new_money = money
+            print("Here.. We grant you another 100 credit to play..")
             play_again(in_progress)
         else:
             if betted_horse == actual_winner:
@@ -109,11 +111,11 @@ def main():
                 print("Your horse won!! Your new Balance is: " + str(new_money))
                 time.sleep(1)
                 slow_printing("Next Race in...    3..    2..     1..")
-                time.sleep(0.8)
+                time.sleep(0.5)
             else:
                 print("Sadly your horse was too slow!")
                 slow_printing("Next Race in...    3..    2..     1..")
-                time.sleep(0.8)
+                time.sleep(0.5)
 
         money = new_money
 
