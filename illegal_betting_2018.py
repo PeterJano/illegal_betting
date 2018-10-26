@@ -4,11 +4,22 @@ import time
 import os
 
 
+'''
+    horses = {'Chop Chop': 2.0, 'Indian Sea': 3.2, 'Iriss Spirit': 4.3, 
+              'Parknacilla': 1.5, 'Pytilla': 2.5, 'Rainbow Heart': 0.7, 
+              'Storm Athena': 1.8, 'Tartlette': 7.0}
+'''
+
 def print_horses(horses):
     os.system("clear")
     print("\nHorses:\t\tOdds:\n")
     for horse in horses.keys():
         print(f"{horse:15} {horses[horse]:.1f}")
+
+
+def clone_horses(horses):
+    cloned_horses = horses
+    return cloned_horses
 
 
 def betting_on_horse(horses):
@@ -73,15 +84,14 @@ def the_winner_is(horses):
     return winner_is
 
 
-def play_again(in_progress):
+def play_again():
     answer = input("Would you like to play again? ").lower().startswith("y")
-    if answer == "y":
-        main()
-    else:
-        in_progress = False
+    return answer
 
 
-
+def next_race():
+    slow_printing("Next Race in...    3..    2..     1..")
+    time.sleep(0.5)
 
 
 def main():
@@ -90,32 +100,35 @@ def main():
     horses = {'Chop Chop': 2.0, 'Indian Sea': 3.2, 'Iriss Spirit': 4.3, 
               'Parknacilla': 1.5, 'Pytilla': 2.5, 'Rainbow Heart': 0.7, 
               'Storm Athena': 1.8, 'Tartlette': 7.0}
+    cloned_horses = clone_horses(horses)
 
     in_progress = True
 
     while in_progress:
-        print_horses(horses)
-        betted_horse = betting_on_horse(horses)
+        print_horses(cloned_horses)
+        betted_horse = betting_on_horse(cloned_horses)
         actual_bet, new_money = betting_cash_amount(money)
         # money -= actual_bet
         # race_is_on()
-        actual_winner = the_winner_is(horses)
+        actual_winner = the_winner_is(cloned_horses)
         if new_money < 1:
             print("You lost all your money! Game Over.")
             new_money = money
-            print("Here.. We grant you another 100 credit to play..")
-            play_again(in_progress)
+            if not play_again():
+                break
+            else:
+                print("Here.. We grant you another 100 credit to play..")
+                main()
         else:
             if betted_horse == actual_winner:
-                new_money += actual_bet * horses[actual_winner]
+                new_money += actual_bet * cloned_horses[actual_winner]
                 print("Your horse won!! Your new Balance is: " + str(new_money))
+                horses[actual_winner] -= random.uniform(0.3, 0.6)
                 time.sleep(1)
-                slow_printing("Next Race in...    3..    2..     1..")
-                time.sleep(0.5)
+                next_race
             else:
                 print("Sadly your horse was too slow!")
-                slow_printing("Next Race in...    3..    2..     1..")
-                time.sleep(0.5)
+                next_race()
 
         money = new_money
 
