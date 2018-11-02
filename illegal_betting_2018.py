@@ -66,26 +66,33 @@ def slow_printing(string):
     for char in string + '\n':
         sys.stdout.write(char)
         sys.stdout.flush()
-        time.sleep(1./7)
+        time.sleep(1./12)
 
 
 def even_slower_print(string):
     for char in string + '\n':
         sys.stdout.write(char)
         sys.stdout.flush()
-        time.sleep(1./4)
+        time.sleep(1./6)
 
 
 def the_winner_is(horses):
     winner_is = random.choice(list(horses.keys()))
     print("The winner is: " + winner_is)
+    horses[winner_is] -= random.uniform(0.3, 0.6)
+    if horses[winner_is] <= 0.5:
+        print("The absolute winner of this season is " + winner_is)
+        time.sleep(0.8)
+        if not play_again():
+            sys.exit()
+        else:
+            main()
     time.sleep(0.7)
-    # winner_is = horses[winner_is]
     return winner_is
 
 
 def play_again():
-    answer = input("Would you like to play again? ").lower().startswith("y")
+    answer = input("\nWould you like to play again? ").lower().startswith("y")
     return answer
 
 
@@ -108,7 +115,6 @@ def main():
         print_horses(cloned_horses)
         betted_horse = betting_on_horse(cloned_horses)
         actual_bet, new_money = betting_cash_amount(money)
-        # money -= actual_bet
         # race_is_on()
         actual_winner = the_winner_is(cloned_horses)
         if new_money < 1:
@@ -122,13 +128,14 @@ def main():
         else:
             if betted_horse == actual_winner:
                 new_money += actual_bet * cloned_horses[actual_winner]
-                print("Your horse won!! Your new Balance is: " + str(new_money))
-                horses[actual_winner] -= random.uniform(0.3, 0.6)
+                print("Your horse won!! Your new Balance is: " + (str(float(new_money))))
+                horses[actual_winner] -= random.uniform(0.5, 0.7)
                 time.sleep(1)
-                next_race
+                next_race()
             else:
                 print("Sadly your horse was too slow!")
                 next_race()
+        
 
         money = new_money
 
